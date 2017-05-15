@@ -1,19 +1,76 @@
-var cards = ['queen', 'queen', 'king', 'king'];
-var cardsInPlay = []
-var cardOne = cards[0];
-cardsInPlay.push("cardOne");
-console.log("User flipped " + cardOne);
-var cardTwo = cards[1];
-cardsInPlay.push("cardTwo");
-console.log("User flipped " + cardTwo);
+var cards = [
+  {
+    card: 'queen',
+    suit: 'hearts',
+    cardImage: 'images/queen-of-hearts.png'
+  },
+  {
+    card: 'queen',
+    suit: 'diamonds',
+    cardImage: 'images/queen-of-diamonds.png'
+  },
+  {
+    card: 'king',
+    suit: 'hearts',
+    cardImage: 'images/king-of-hearts.png'
+  },
+  {
+    card: 'king',
+    suit: 'diamonds',
+    cardImage: 'images/king-of-diamonds.png'
+  }
+];
 
-// Check to see if two cards have been played
-if (cardsInPlay.length === 2) {
-	// Check to see if two cards match and provide feedback to user
-	if (cardsInPlay[0] === cardsInPlay[1]) {
-		alert("You found a match!");
-	} else {
-		alert("Sorry, try again");
-		
-	}
+var cardsInPlay = [];
+
+// Create a function to check for a match
+var checkForMatch = function () {
+  // Check to see if two cards match 
+  if (cardsInPlay[0] === cardsInPlay[1]) {
+    alert("You found a match!");
+  } else {
+    alert("Sorry, try again.");
+  }
+};
+
+// Create a function for flipping a card
+var flipCard = function () {
+  
+  cardId = this.getAttribute('data-id');
+  console.log(cardId);
+
+  // Add card to array of cards that are in play
+  cardsInPlay.push(cards[cardId].card);
+
+  // Display the card's image
+  this.setAttribute('src', cards[cardId].cardImage);
+
+  if (cardsInPlay.length === 2) {
+   
+    checkForMatch();
+    
+    cardsInPlay = [];
+  }
+};
+
+// Function that will create your board
+var createBoard = function () {
+  // Loop through your card array
+  for (var i = 0; i < cards.length; i++) {
+    
+    var cardElement = document.createElement('img');
+
+    cardElement.setAttribute('src', 'images/back.png');
+
+    // Set the card's 'data-id' attribute to be the index of the current element
+    cardElement.setAttribute('data-id', i);
+
+    cardElement.addEventListener('click', flipCard);
+
+    document.getElementById('game-board').appendChild(cardElement);
+
+  }
+
 }
+
+createBoard();
